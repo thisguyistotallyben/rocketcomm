@@ -1,0 +1,13 @@
+{
+    "File": {
+        "&New": {
+            "signal": "newsig",
+            "hotkey": "Ctrl+N"
+        }
+    },
+    "&Edit": {
+        "&Port": {
+            "signal": "portsig"
+        }
+    }
+}
