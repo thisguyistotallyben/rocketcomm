@@ -2,12 +2,13 @@
 # Author:  Benjamin Johnson
 # Purpose: This is the widget that rocketcomm.py handles
 
+
 import os, sys, glob
 from serial.tools import list_ports
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtWidgets import *
-
 from utils.multiview import View
+
 
 class Rocket(View):
     def __init__(self, mvp):
@@ -20,7 +21,12 @@ class Rocket(View):
         # init
         self.initUI()
 
+        # get ports
         self.portsig()
+        self.newsig()
+
+        # send friendly message
+        self.setStatus('Connect to a port to begin')
 
     def initUI(self):
         self.layout = QGridLayout()
@@ -63,14 +69,10 @@ class Rocket(View):
         self.statuslayout.addWidget(self.widgets['status receive'])
 
         # set signals
-        self.widgets['conn connect'].clicked.connect(self.buttsig)
+        self.widgets['conn connect'].clicked.connect(self.connectsig)
         self.widgets['start'].clicked.connect(self.recsig)
         self.widgets['stop'].clicked.connect(self.recsig)
         self.widgets['conn refresh'].clicked.connect(self.portsig)
-
-        # disable buttons
-        self.widgets['stop'].setDisabled(True)
-        self.widgets['save'].setDisabled(True)
 
         self.datalayout.addWidget(self.widgets['data'])
         self.widgets['datacase'].setLayout(self.datalayout)
@@ -87,9 +89,12 @@ class Rocket(View):
         self.layout.setColumnStretch(2,3)
         self.layout.setColumnStretch(3,3)
 
-    def buttsig(self):
+    def connectsig(self):
         self.widgets['conn connect'].setText('Connected')
         self.widgets['conn connect'].setDisabled(True)
+        self.widgets['conn combo'].setDisabled(True)
+        self.widgets['conn refresh'].setDisabled(True)
+        self.widgets['start'].setDisabled(False)
 
     def recsig(self):
         if self.recording:
@@ -105,7 +110,16 @@ class Rocket(View):
             self.setStatus('Recording')
 
     def newsig(self):
-        print('New signal goes here')
+        # reset connection area
+        self.widgets['conn connect'].setText('Connect')
+        self.widgets['conn connect'].setDisabled(False)
+        self.widgets['conn combo'].setDisabled(False)
+        self.widgets['conn refresh'].setDisabled(False)
+
+        # reset data recording area
+        self.widgets['start'].setDisabled(True)
+        self.widgets['stop'].setDisabled(True)
+        self.widgets['save'].setDisabled(True)
 
     def portsig(self):
         # setup
