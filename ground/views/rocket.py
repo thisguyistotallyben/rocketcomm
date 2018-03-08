@@ -1,3 +1,7 @@
+# Rocket view
+# Author:  Benjamin Johnson
+# Purpose: This is the widget that rocketcomm.py handles
+
 import os, sys, glob
 from serial.tools import list_ports
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -61,8 +65,12 @@ class Rocket(View):
         # set signals
         self.widgets['conn connect'].clicked.connect(self.buttsig)
         self.widgets['start'].clicked.connect(self.recsig)
+        self.widgets['stop'].clicked.connect(self.recsig)
         self.widgets['conn refresh'].clicked.connect(self.portsig)
 
+        # disable buttons
+        self.widgets['stop'].setDisabled(True)
+        self.widgets['save'].setDisabled(True)
 
         self.datalayout.addWidget(self.widgets['data'])
         self.widgets['datacase'].setLayout(self.datalayout)
@@ -87,12 +95,13 @@ class Rocket(View):
         if self.recording:
             self.recording = False
             # stop recording and do whatever
-            self.widgets['record'].setText('Data recorded')
-            self.widgets['record'].setDisabled(True)
+            self.widgets['stop'].setDisabled(True)
+            self.widgets['save'].setDisabled(False)
             self.setStatus('Stopped')
         else:
             self.recording = True
-            self.widgets['record'].setText('Stop recording')
+            self.widgets['start'].setDisabled(True)
+            self.widgets['stop'].setDisabled(False)
             self.setStatus('Recording')
 
     def newsig(self):

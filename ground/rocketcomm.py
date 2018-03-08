@@ -8,7 +8,6 @@ from PyQt5.QtWidgets import *
 
 from utils.multiview import MultiView
 from views.rocket import Rocket
-from views.diag import Diag
 
 class RocketView(MultiView):
     def __init__(self):
@@ -41,9 +40,6 @@ class RocketView(MultiView):
 
         # rocket view
         self.rocket = Rocket(self)
-        self.diag = Diag(self)
-
-        self.addView(self.diag)
         self.addView(self.rocket)
 
         # add the viewer and set
