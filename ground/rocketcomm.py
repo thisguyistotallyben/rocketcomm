@@ -1,7 +1,6 @@
-# test.py
+# Rocket Communications
 # Author:  Ben Johnson
-# Purpose: Provide a temporary wrapper for townwizard and also test
-#          View/MultiView function
+# Purpose: Provides all ground communication needs in a spiffy UI
 
 import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -9,6 +8,7 @@ from PyQt5.QtWidgets import *
 
 from utils.multiview import MultiView
 from views.rocket import Rocket
+from views.diag import Diag
 
 class RocketView(MultiView):
     def __init__(self):
@@ -17,8 +17,8 @@ class RocketView(MultiView):
         self.title = 'Rocket Comms (Alpha)'
         self.left = 10
         self.top = 10
-        self.width = 400
-        self.height = 600
+        self.width = 800
+        self.height = 400
 
         self.createMenuBar()
         self.createStatusBar()
@@ -41,6 +41,9 @@ class RocketView(MultiView):
 
         # rocket view
         self.rocket = Rocket(self)
+        self.diag = Diag(self)
+
+        self.addView(self.diag)
         self.addView(self.rocket)
 
         # add the viewer and set
